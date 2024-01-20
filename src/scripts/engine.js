@@ -4,21 +4,27 @@ const keysCheck = document.querySelector(".keys-check input");
 
 let mapedKeys = Array.from(pianoKeys, key => key.dataset.key);
 let keysPressed = [];
-let audios = []; // Lista para armazenar todos os objetos Audio
+let audios = {}; // Objeto para armazenar todos os objetos Audio
 let volume = 1; // Variável global para o volume
 
-const playTune = (key) => {
+mapedKeys.forEach(key => {
     let audio = new Audio(`src/tunes/${key}.wav`);
     audio.volume = volume; // Definindo o volume do objeto Audio
-    audios.push(audio); // Adicionando o objeto Audio à lista
+    audios[key] = audio; // Adicionando o objeto Audio ao objeto
+});
+
+const playTune = (key) => {
+    let audio = audios[key].cloneNode();
+    audio.volume = volume; // Definindo o volume do objeto Audio
     audio.play();
 
     const clickedKey = document.querySelector(`[data-key="${key}"]`);
     clickedKey.classList.add("active");
 
-    audio.addEventListener('ended', () => {
-        audios = audios.filter(a => a !== audio);
-    });
+    audio.onended = () => {
+        clickedKey.classList.remove("active");
+        audio.onended = null; // Remove o ouvinte de eventos
+    };
 };
 
 const handleMouseUp = (key) => {
@@ -48,9 +54,8 @@ document.addEventListener("keyup", (e) => {
 
 const handleVolume = () => {
     volume = volumeSlider.value; // Definindo o volume global
-    audios.forEach((audio) => audio.volume = volume); // Definindo o volume de cada objeto Audio
+    Object.values(audios).forEach((audio) => audio.volume = volume); // Definindo o volume de cada objeto Audio
 }
-
 const showHideKeys = () => {
     pianoKeys.forEach((key) => key.classList.toggle("hide"));
 };

@@ -26,6 +26,8 @@ Acesse: [https://luandiasrj.github.io/js-music-keyboard-virtual/](https://luandi
 - **Demonstração musical**: Agora há uma demonstração da música "The Celebrated Chop Waltz" (waltz) para mostrar que o
   teclado é funcional.
 
+- **Pré-carregamento dos áudios**: Os áudios são pré-carregados para evitar engasgamento na reprodução das notas.
+
 ### Contribuição
 
 Contribuições são bem-vindas! Se você deseja melhorar este jogo, adicionar novos recursos ou corrigir problemas,
